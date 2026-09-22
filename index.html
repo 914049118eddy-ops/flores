@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Para ti 🌻</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at center, #1b1a29 0%, #0a0a0f 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    .flower-wrap {
+      position: relative;
+      width: 240px;
+      height: 280px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+    .stem {
+      width: 8px;
+      height: 160px;
+      background: linear-gradient(to top, #1e4620, #38b000);
+      border-radius: 4px;
+      position: relative;
+      z-index: 1;
+    }
+    .leaf {
+      position: absolute;
+      width: 40px;
+      height: 20px;
+      background: #38b000;
+      border-radius: 40px 0 40px 0;
+    }
+    .leaf.l1 { top: 70px; left: -34px; transform: rotate(-25deg); }
+    .leaf.l2 { top: 100px; right: -34px; transform: rotate(115deg); }
+    .head {
+      position: absolute;
+      top: 25px;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      cursor: pointer;
+      animation: float 3.5s ease-in-out infinite alternate;
+    }
+    @keyframes float {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(-8px) rotate(2deg); }
+    }
+    .petal {
+      position: absolute;
+      width: 20px;
+      height: 55px;
+      background: linear-gradient(to top, #ff9e00, #ffea00);
+      border-radius: 50% 50% 20% 20%;
+      transform-origin: center bottom;
+      box-shadow: 0 0 12px rgba(255, 234, 0, 0.4);
+      transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .core {
+      width: 55px;
+      height: 55px;
+      background: radial-gradient(circle, #4a2800 65%, #231200 100%);
+      border-radius: 50%;
+      position: relative;
+      z-index: 3;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 0 15px rgba(255, 170, 0, 0.2);
+    }
+    .tap-hint {
+      font-size: 0.85rem;
+      color: #ffd60a;
+      letter-spacing: 0.5px;
+      margin-bottom: 15px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.7s ease;
+      pointer-events: none;
+    }
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .card h2 {
+      font-size: 1.3rem;
+      color: #ffea00;
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="flower-wrap">
+      <div class="head" id="sunflower" onclick="openGift()">
+        <div class="core"></div>
+      </div>
+      <div class="stem">
+        <div class="leaf l1"></div>
+        <div class="leaf l2"></div>
+      </div>
+    </div>
+
+    <div class="tap-hint" id="hint">Toca la flor</div>
+
+    <div class="card" id="card">
+      <h2>Para ti ✨</h2>
+      <p>
+        Flores amarillas para recordarte lo especial que eres para mí y que, sin importar la distancia, siempre estoy contigo.<br><br>
+        Feliz 21 de septiembre.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const head = document.getElementById('sunflower');
+    const petals = 12;
+    for (let i = 0; i < petals; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.transform = `rotate(${i * (360 / petals)}deg) translateY(-26px)`;
+      head.appendChild(p);
+    }
+
+    function openGift() {
+      document.getElementById('card').classList.add('show');
+      document.getElementById('hint').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
