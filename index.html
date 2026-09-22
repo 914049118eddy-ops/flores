@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Flores Amarillas para tu 🌻</title>
+  <title>Flores Amarillas para ti 🌻</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,8 +23,7 @@
       font-family: 'Outfit', sans-serif;
       background: radial-gradient(circle at 50% 20%, #1c1527 0%, #0d0b14 60%, #050408 100%);
       min-height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
       color: #fff;
       position: relative;
     }
@@ -33,41 +32,30 @@
       font-family: 'Caveat', cursive;
     }
 
-    /* Ambient canvas overlay */
-    #fx-canvas {
+    #fx-canvas, #garden-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 5;
     }
 
-    /* Interactive flower tap canvas */
-    #garden-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 8;
-      pointer-events: none;
-    }
+    #fx-canvas { z-index: 5; }
+    #garden-canvas { z-index: 8; }
 
-    /* Glassmorphic card styling */
+    /* Tarjeta esmerilada */
     .glass-card {
-      background: rgba(22, 19, 36, 0.72);
+      background: rgba(22, 19, 36, 0.76);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border: 1px solid rgba(253, 224, 71, 0.22);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
                   0 0 25px rgba(250, 204, 21, 0.12),
                   inset 0 1px 1px rgba(255, 255, 255, 0.15);
-      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Central flower floating and glow */
+    /* Flor central flotante */
     .flower-sway {
       animation: gentleSway 5s ease-in-out infinite alternate;
       transform-origin: bottom center;
@@ -82,55 +70,49 @@
       filter: drop-shadow(0 0 25px rgba(250, 204, 21, 0.45));
     }
 
-    /* Pulse animation for touch prompt */
-    @keyframes promptPulse {
-      0%, 100% { opacity: 0.55; transform: scale(0.98); }
-      50% { opacity: 1; transform: scale(1.03); }
-    }
-
-    .pulse-hint {
-      animation: promptPulse 2.2s infinite ease-in-out;
-    }
-
-    /* Golden text glow */
     .glow-text {
       text-shadow: 0 0 16px rgba(250, 204, 21, 0.7),
                    0 0 30px rgba(234, 179, 8, 0.4);
     }
 
-    /* Petal bloom keyframe for dynamic DOM flowers */
-    @keyframes flowerPop {
-      0% { transform: scale(0) rotate(-15deg); opacity: 0; }
-      70% { transform: scale(1.15) rotate(4deg); opacity: 1; }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    .pulse-hint {
+      animation: promptPulse 2.2s infinite ease-in-out;
+    }
+    @keyframes promptPulse {
+      0%, 100% { opacity: 0.45; transform: scale(0.98); }
+      50% { opacity: 0.95; transform: scale(1.02); }
     }
 
-    .pop-bloom {
-      animation: flowerPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    /* Transición suave de los párrafos */
+    .text-transition {
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .text-exit {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    .text-enter {
+      opacity: 0;
+      transform: translateY(8px);
     }
   </style>
 </head>
 
-<body class="flex flex-col items-center justify-start min-h-screen px-4 py-8 relative">
+<body class="flex flex-col items-center justify-center min-h-screen px-4 py-6 relative cursor-pointer">
 
-  <!-- Canvases for fireflies, petals and dynamic touch flowers -->
+  <!-- Lienzos gráficos para luciérnagas, pétalos y jardín interactivo -->
   <canvas id="fx-canvas"></canvas>
   <canvas id="garden-canvas"></canvas>
 
-  <!-- Main interactive wrapper -->
-  <main class="w-full max-w-md flex flex-col items-center relative z-10 my-auto pb-16">
+  <main class="w-full max-w-md flex flex-col items-center relative z-10">
 
-    <!-- Interactive Central Sunflower -->
-    <div id="flower-hero" 
-         class="cursor-pointer flex flex-col items-center transition-all duration-700 hover:scale-105 active:scale-95 my-2"
-         onclick="revealLoveLetter()">
-      
-      <div class="relative w-48 h-60 flex flex-col items-center justify-end flower-sway">
+    <!-- Girasol central presente desde el inicio -->
+    <div id="flower-hero" class="flex flex-col items-center pointer-events-none mb-3">
+      <div class="relative w-44 h-56 flex flex-col items-center justify-end flower-sway">
         
-        <!-- Sunflower Blossom Head -->
-        <div id="sunflower-head" class="relative w-36 h-36 flex items-center justify-center sun-glow z-10 mb-[-12px]">
-          <!-- Sunflower SVG rendering -->
-          <svg class="w-full h-full transform transition-transform duration-500" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Cabeza del girasol SVG -->
+        <div class="relative w-36 h-36 flex items-center justify-center sun-glow z-10 mb-[-12px]">
+          <svg class="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="petalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="#fffbeb" />
@@ -144,8 +126,7 @@
               </radialGradient>
             </defs>
 
-            <!-- 16 Radial Petals -->
-            <!-- Layer 1: Back petals -->
+            <!-- Pétalos capa 1 -->
             <g transform="rotate(11.25 50 50)" opacity="0.9">
               <ellipse cx="50" cy="18" rx="7.5" ry="17" fill="url(#petalGrad)"/>
               <ellipse cx="50" cy="18" rx="7.5" ry="17" fill="url(#petalGrad)" transform="rotate(45 50 50)"/>
@@ -157,7 +138,7 @@
               <ellipse cx="50" cy="18" rx="7.5" ry="17" fill="url(#petalGrad)" transform="rotate(315 50 50)"/>
             </g>
 
-            <!-- Layer 2: Main front petals -->
+            <!-- Pétalos capa 2 -->
             <g>
               <ellipse cx="50" cy="17" rx="8" ry="18" fill="url(#petalGrad)"/>
               <ellipse cx="50" cy="17" rx="8" ry="18" fill="url(#petalGrad)" transform="rotate(45 50 50)"/>
@@ -169,137 +150,94 @@
               <ellipse cx="50" cy="17" rx="8" ry="18" fill="url(#petalGrad)" transform="rotate(315 50 50)"/>
             </g>
 
-            <!-- Textured Dark Brown Seed Center -->
+            <!-- Centro con textura -->
             <circle cx="50" cy="50" r="17.5" fill="url(#centerGrad)" stroke="#eab308" stroke-width="0.8" stroke-opacity="0.4" />
             <circle cx="50" cy="50" r="14.5" fill="none" stroke="#78350f" stroke-width="1.2" stroke-dasharray="2,3" opacity="0.6" />
             <circle cx="50" cy="50" r="9.5" fill="none" stroke="#92400e" stroke-width="1" stroke-dasharray="2,2" opacity="0.8" />
           </svg>
         </div>
 
-        <!-- Stem & Leaves -->
+        <!-- Tallo y hojas -->
         <div class="relative w-3.5 h-32 bg-gradient-to-b from-green-500 via-emerald-600 to-green-800 rounded-full shadow-lg">
-          <!-- Left leaf -->
           <div class="absolute -left-9 top-10 w-11 h-6 bg-gradient-to-r from-emerald-600 to-green-500 rounded-[30px_0_30px_0] shadow-md transform -rotate-12 origin-right"></div>
-          <!-- Right leaf -->
           <div class="absolute -right-10 top-16 w-12 h-6 bg-gradient-to-l from-emerald-600 to-green-500 rounded-[0_30px_0_30px] shadow-md transform rotate-12 origin-left"></div>
         </div>
 
       </div>
-
-      <!-- Touch Hint -->
-      <div id="tap-instruction" class="pulse-hint flex items-center space-x-2 text-yellow-300 font-medium text-sm mt-3 bg-yellow-950/40 border border-yellow-500/30 px-4 py-1.5 rounded-full shadow-inner">
-        <span>Toca la flor para abrir tu regalo</span>
-        <span class="text-base">✨</span>
-      </div>
     </div>
 
-    <section id="love-card" class="glass-card w-full rounded-3xl p-7 mt-6 text-center opacity-0 translate-y-8 pointer-events-none transition-all duration-1000 ease-out">
-      
-      <!-- Card Title -->
-      <h1 class="text-yellow-400 font-bold text-2xl tracking-wide glow-text mb-5 handwriting text-3xl">
-        Para ti
+    <!-- Tarjeta con título fijo y mensajes dinámicos -->
+    <section class="glass-card w-full rounded-3xl p-6 text-center shadow-2xl relative pointer-events-none">
+      <h1 class="text-yellow-400 font-bold tracking-wide glow-text mb-4 handwriting text-3xl">
+        Para tu
       </h1>
 
-      <!-- Message Content -->
-      <div class="space-y-4 text-neutral-200 text-[0.98rem] leading-relaxed font-light text-center px-1">
-        
-        <p>
-          Me hubiera encantado dártelas en persona y ponerlas en tus manos hoy mismo.
-        </p>
-
-        <p>
-          Pero antes de dejar que termine el día sin darte unas flores amarillas, quise construirte estas.
-        </p>
-
-        <p class="text-neutral-300 text-sm italic pt-1">
-          Tal vez sea de una forma distinta, pero con el mismo sentimiento para decirte:
-        </p>
-
-        <!-- Golden Highlight TE AMO <3 -->
-        <div class="py-2.5">
-          <span class="inline-block text-yellow-300 font-extrabold text-2xl md:text-3xl tracking-wider glow-text handwriting transform hover:scale-110 transition-transform">
-            TE AMO &lt;3
-          </span>
+      <div class="min-h-[105px] flex items-center justify-center px-2">
+        <div id="dynamic-text" class="text-neutral-200 text-[1.02rem] leading-relaxed font-light text-center text-transition">
+          <!-- El texto se inyecta por JS -->
         </div>
-
-        <p class="text-neutral-200 font-normal">
-          te amo, te quiero, te quiero abrazar, quiero hacer locuras contigo..
-        </p>
-
-        <p class="text-yellow-200/90 font-medium text-sm pt-1 tracking-wide">
-          no lo olvides, y tampoco lo dudes.
-        </p>
       </div>
 
-      <!-- Hint for garden interaction -->
-      <div class="mt-7 pt-4 border-t border-yellow-500/20 text-xs text-yellow-300/80 font-light flex items-center justify-center space-x-1">
-        <span>🌻 Toca cualquier lugar de la pantalla para plantar más flores</span>
+      <div id="hint-tag" class="mt-4 pt-3 border-t border-yellow-500/20 text-xs text-yellow-300/80 pulse-hint flex items-center justify-center space-x-1">
+        <span>Toca la pantalla para continuar</span>
+        <span>✨</span>
       </div>
     </section>
 
   </main>
 
-  <!-- Ambient audio chime synthesizer using Web Audio API (Zero external assets needed) -->
   <script>
+    /* Sintetizador de sonido sutil */
     let audioCtx = null;
-
     function playSparkleSound() {
       try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
         
         const now = audioCtx.currentTime;
-        const notes = [587.33, 659.25, 880.00, 1046.50, 1318.51]; // D5, E5, A5, C6, E6
+        const notes = [587.33, 659.25, 880.00, 1046.50, 1318.51];
         const randomNote = notes[Math.floor(Math.random() * notes.length)];
         
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        
         osc.type = 'sine';
         osc.frequency.setValueAtTime(randomNote, now);
-        osc.frequency.exponentialRampToValueAtTime(randomNote * 1.5, now + 0.35);
+        osc.frequency.exponentialRampToValueAtTime(randomNote * 1.4, now + 0.3);
         
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
         
         osc.connect(gain);
         gain.connect(audioCtx.destination);
-        
         osc.start(now);
-        osc.stop(now + 0.5);
-      } catch (e) {
-        // Fallback silently if audio context is blocked
-      }
+        osc.stop(now + 0.45);
+      } catch (e) {}
     }
 
+    /* Fondo de luciérnagas y pétalos en canvas */
     const fxCanvas = document.getElementById('fx-canvas');
     const fxCtx = fxCanvas.getContext('2d');
+    const gardenCanvas = document.getElementById('garden-canvas');
+    const gCtx = gardenCanvas.getContext('2d');
 
-    let width = (fxCanvas.width = window.innerWidth);
-    let height = (fxCanvas.height = window.innerHeight);
+    let width = (fxCanvas.width = gardenCanvas.width = window.innerWidth);
+    let height = (fxCanvas.height = gardenCanvas.height = window.innerHeight);
 
     window.addEventListener('resize', () => {
       width = fxCanvas.width = gardenCanvas.width = window.innerWidth;
       height = fxCanvas.height = gardenCanvas.height = window.innerHeight;
     });
 
-    // Particle definitions
     const fireflies = [];
-    const fireflyCount = 42;
-    for (let i = 0; i < fireflyCount; i++) {
+    for (let i = 0; i < 35; i++) {
       fireflies.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2.2 + 0.8,
-        speedX: (Math.random() - 0.5) * 0.6,
-        speedY: -Math.random() * 0.5 - 0.2,
-        opacity: Math.random() * 0.8 + 0.2,
-        phase: Math.random() * Math.PI * 2,
-        color: Math.random() > 0.3 ? '#facc15' : '#fef08a'
+        radius: Math.random() * 2 + 0.8,
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: -Math.random() * 0.4 - 0.2,
+        opacity: Math.random() * 0.7 + 0.3,
+        phase: Math.random() * Math.PI * 2
       });
     }
 
@@ -308,13 +246,13 @@
 
     function addFallingPetal() {
       if (!petalsFalling) return;
-      if (fallingPetals.length < 35 && Math.random() < 0.3) {
+      if (fallingPetals.length < 30 && Math.random() < 0.25) {
         fallingPetals.push({
           x: Math.random() * width,
           y: -20,
-          size: Math.random() * 10 + 9,
-          speedY: Math.random() * 1.4 + 0.8,
-          speedX: Math.sin(Math.random()) * 0.9,
+          size: Math.random() * 9 + 8,
+          speedY: Math.random() * 1.3 + 0.7,
+          speedX: Math.sin(Math.random()) * 0.8,
           angle: Math.random() * 360,
           rotationSpeed: (Math.random() - 0.5) * 2,
           opacity: Math.random() * 0.6 + 0.4
@@ -325,100 +263,58 @@
     function animateFX() {
       fxCtx.clearRect(0, 0, width, height);
 
-      // Draw and update fireflies
+      // Luciérnagas
       for (let f of fireflies) {
         f.x += f.speedX + Math.sin(f.phase) * 0.3;
         f.y += f.speedY;
         f.phase += 0.03;
-
         if (f.y < -10) f.y = height + 10;
         if (f.x < -10) f.x = width + 10;
         if (f.x > width + 10) f.x = -10;
 
-        const currentOpacity = (Math.sin(f.phase) * 0.5 + 0.5) * f.opacity;
-
-        // Glow
-        const grad = fxCtx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.radius * 4.5);
-        grad.addColorStop(0, f.color);
+        const op = (Math.sin(f.phase) * 0.5 + 0.5) * f.opacity;
+        const grad = fxCtx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.radius * 4);
+        grad.addColorStop(0, '#facc15');
         grad.addColorStop(0.3, 'rgba(250, 204, 21, 0.4)');
         grad.addColorStop(1, 'rgba(250, 204, 21, 0)');
 
         fxCtx.beginPath();
-        fxCtx.arc(f.x, f.y, f.radius * 4.5, 0, Math.PI * 2);
+        fxCtx.arc(f.x, f.y, f.radius * 4, 0, Math.PI * 2);
         fxCtx.fillStyle = grad;
         fxCtx.fill();
 
-        // Core dot
         fxCtx.beginPath();
         fxCtx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
-        fxCtx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
+        fxCtx.fillStyle = `rgba(255, 255, 255, ${op})`;
         fxCtx.fill();
       }
 
-      // Draw falling yellow petals
+      // Pétalos flotantes
       addFallingPetal();
       for (let i = fallingPetals.length - 1; i >= 0; i--) {
         const p = fallingPetals[i];
         p.y += p.speedY;
-        p.x += Math.sin(p.angle * Math.PI / 180) * 0.8 + p.speedX;
+        p.x += Math.sin(p.angle * Math.PI / 180) * 0.7 + p.speedX;
         p.angle += p.rotationSpeed;
 
         fxCtx.save();
         fxCtx.translate(p.x, p.y);
         fxCtx.rotate(p.angle * Math.PI / 180);
         fxCtx.fillStyle = `rgba(250, 204, 21, ${p.opacity})`;
-        
-        // Draw petal shape
         fxCtx.beginPath();
         fxCtx.ellipse(0, 0, p.size * 0.4, p.size, 0, 0, Math.PI * 2);
         fxCtx.fill();
         fxCtx.restore();
 
-        if (p.y > height + 20) {
-          fallingPetals.splice(i, 1);
-        }
+        if (p.y > height + 20) fallingPetals.splice(i, 1);
       }
 
       requestAnimationFrame(animateFX);
     }
     animateFX();
 
-    const loveCard = document.getElementById('love-card');
-    const tapHint = document.getElementById('tap-instruction');
-    let hasOpened = false;
-
-    function revealLoveLetter() {
-      if (hasOpened) return;
-      hasOpened = true;
-      playSparkleSound();
-
-      // Animate card entrance
-      loveCard.classList.remove('opacity-0', 'translate-y-8', 'pointer-events-none');
-      loveCard.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
-      
-      // Hide initial hint
-      tapHint.style.transition = 'opacity 0.5s ease';
-      tapHint.style.opacity = '0';
-      setTimeout(() => tapHint.remove(), 500);
-
-      // Start falling petals
-      petalsFalling = true;
-
-      // Spawn celebration waves of blooming flowers across screen bottom
-      bloomBottomGarden();
-
-      // Enable touch anywhere to bloom flowers
-      document.body.style.cursor = 'pointer';
-      window.addEventListener('click', handleUserGardenTouch);
-      window.addEventListener('touchstart', handleUserGardenTouch, { passive: true });
-    }
-
-    const gardenCanvas = document.getElementById('garden-canvas');
-    const gCtx = gardenCanvas.getContext('2d');
-    gardenCanvas.width = width;
-    gardenCanvas.height = height;
-
-    const activeFlowers = [];
+    /* Flores que crecen en el lienzo */
+    const activeElements = [];
 
     class BloomingFlower {
       constructor(x, y, targetScale = 1, options = {}) {
@@ -429,23 +325,17 @@
         this.rotation = (Math.random() - 0.5) * 0.4;
         this.petalCount = options.petals || 12;
         this.progress = 0;
-        this.bloomSpeed = 0.035 + Math.random() * 0.02;
+        this.bloomSpeed = 0.035;
         this.hasStem = options.hasStem ?? true;
         this.stemHeight = options.stemHeight || (Math.random() * 70 + 60);
-        this.color = options.color || '#facc15';
-        this.seedColor = '#3b1d07';
         this.sparkles = [];
-        this.initSparkles();
-      }
-
-      initSparkles() {
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 5; i++) {
           this.sparkles.push({
             x: this.x,
             y: this.y - (this.hasStem ? this.stemHeight : 0),
-            vx: (Math.random() - 0.5) * 3,
-            vy: (Math.random() - 0.5) * 3 - 1,
-            size: Math.random() * 3 + 1,
+            vx: (Math.random() - 0.5) * 2.5,
+            vy: (Math.random() - 0.5) * 2.5 - 1,
+            size: Math.random() * 2.5 + 1,
             alpha: 1
           });
         }
@@ -456,21 +346,17 @@
           this.progress += this.bloomSpeed;
           this.scale = Math.min(this.targetScale, this.progress * this.targetScale);
         }
-
-        // Sparkle fade
         for (let s of this.sparkles) {
           s.x += s.vx;
           s.y += s.vy;
-          s.alpha -= 0.03;
+          s.alpha -= 0.035;
         }
       }
 
       draw(ctx) {
         ctx.save();
+        const headY = this.y - (this.hasStem ? this.stemHeight * this.progress : 0);
 
-        const headY = this.y - (this.hasStem ? this.stemHeight * (this.progress) : 0);
-
-        // Draw Stem
         if (this.hasStem && this.progress > 0.1) {
           ctx.beginPath();
           ctx.moveTo(this.x, this.y);
@@ -480,7 +366,6 @@
           ctx.lineCap = 'round';
           ctx.stroke();
 
-          // Small Leaves
           if (this.progress > 0.4) {
             ctx.save();
             ctx.fillStyle = '#16a34a';
@@ -493,22 +378,17 @@
           }
         }
 
-        // Draw Blossom Head
         ctx.translate(this.x, headY);
         ctx.rotate(this.rotation);
-        const radius = 22 * this.scale;
+        const radius = 20 * this.scale;
 
-        // Draw Petals
         for (let i = 0; i < this.petalCount; i++) {
-          const angle = (i * Math.PI * 2) / this.petalCount;
           ctx.save();
-          ctx.rotate(angle);
-          
+          ctx.rotate((i * Math.PI * 2) / this.petalCount);
           const grad = ctx.createLinearGradient(0, 0, 0, -radius * 1.5);
           grad.addColorStop(0, '#fef08a');
           grad.addColorStop(0.5, '#facc15');
           grad.addColorStop(1, '#ea580c');
-
           ctx.fillStyle = grad;
           ctx.beginPath();
           ctx.ellipse(0, -radius * 0.9, radius * 0.38, radius * 0.8, 0, 0, Math.PI * 2);
@@ -516,10 +396,9 @@
           ctx.restore();
         }
 
-        // Draw Flower Center (Disc Floret)
         ctx.beginPath();
         ctx.arc(0, 0, radius * 0.55, 0, Math.PI * 2);
-        ctx.fillStyle = this.seedColor;
+        ctx.fillStyle = '#3b1d07';
         ctx.fill();
         ctx.strokeStyle = '#ca8a04';
         ctx.lineWidth = 1;
@@ -527,7 +406,6 @@
 
         ctx.restore();
 
-        // Draw burst sparkles
         for (let s of this.sparkles) {
           if (s.alpha > 0) {
             ctx.beginPath();
@@ -539,55 +417,193 @@
       }
     }
 
+    /* Huellitas doradas de michi (🐾) que permanecen en el lienzo */
+    class BloomingPaw {
+      constructor(x, y, targetScale = 1) {
+        this.x = x;
+        this.y = y;
+        this.scale = 0.05;
+        this.targetScale = targetScale;
+        this.progress = 0;
+        this.bloomSpeed = 0.045;
+        this.rotation = (Math.random() - 0.5) * 0.6;
+        this.sparkles = [];
+        for (let i = 0; i < 5; i++) {
+          this.sparkles.push({
+            x: this.x,
+            y: this.y,
+            vx: (Math.random() - 0.5) * 2.5,
+            vy: (Math.random() - 0.5) * 2.5,
+            size: Math.random() * 2 + 1,
+            alpha: 1
+          });
+        }
+      }
+
+      update() {
+        if (this.progress < 1) {
+          this.progress += this.bloomSpeed;
+          this.scale = Math.min(this.targetScale, this.progress * this.targetScale);
+        }
+        for (let s of this.sparkles) {
+          s.x += s.vx;
+          s.y += s.vy;
+          s.alpha -= 0.04;
+        }
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        const r = 15 * this.scale;
+
+        ctx.fillStyle = 'rgba(250, 204, 21, 0.88)';
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 10 * this.scale;
+
+        // Almohadilla central
+        ctx.beginPath();
+        ctx.ellipse(0, r * 0.2, r * 0.75, r * 0.55, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 4 deditos
+        const toes = [
+          { dx: -r * 0.65, dy: -r * 0.42, rx: r * 0.26, ry: r * 0.32, rot: -0.25 },
+          { dx: -r * 0.22, dy: -r * 0.72, rx: r * 0.26, ry: r * 0.35, rot: -0.08 },
+          { dx:  r * 0.22, dy: -r * 0.72, rx: r * 0.26, ry: r * 0.35, rot: 0.08 },
+          { dx:  r * 0.65, dy: -r * 0.42, rx: r * 0.26, ry: r * 0.32, rot: 0.25 }
+        ];
+
+        for (let t of toes) {
+          ctx.beginPath();
+          ctx.ellipse(t.dx, t.dy, t.rx, t.ry, t.rot, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        for (let s of this.sparkles) {
+          if (s.alpha > 0) {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(254, 240, 138, ${s.alpha})`;
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    /* Animación del jardín inferior */
     function bloomBottomGarden() {
-      const bottomY = height;
       const count = Math.min(10, Math.floor(width / 38));
       const step = width / (count + 1);
 
       for (let i = 1; i <= count; i++) {
         setTimeout(() => {
           const x = step * i + (Math.random() - 0.5) * 20;
-          const scale = Math.random() * 0.45 + 0.65;
-          const stemHeight = Math.random() * 80 + 70;
-          activeFlowers.push(new BloomingFlower(x, bottomY, scale, { hasStem: true, stemHeight }));
+          const scale = Math.random() * 0.4 + 0.65;
+          const stemHeight = Math.random() * 75 + 65;
+          activeElements.push(new BloomingFlower(x, height, scale, { hasStem: true, stemHeight }));
           playSparkleSound();
-        }, i * 220);
+        }, i * 200);
       }
-    }
-
-    let lastTapTime = 0;
-    function handleUserGardenTouch(e) {
-      // Don't duplicate events for touch & click
-      const now = Date.now();
-      if (now - lastTapTime < 80) return;
-      lastTapTime = now;
-
-      // Ignore if user tapped directly inside the text selection
-      if (e.target.closest('#love-card') && window.getSelection().toString().length > 0) return;
-
-      let clientX = e.clientX;
-      let clientY = e.clientY;
-
-      if (e.touches && e.touches[0]) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      }
-
-      if (!clientX || !clientY) return;
-
-      playSparkleSound();
-
-      // Spawn a new blossoming flower at tap coordinates
-      const scale = Math.random() * 0.4 + 0.7;
-      activeFlowers.push(new BloomingFlower(clientX, clientY, scale, {
-        hasStem: false,
-        petals: Math.random() > 0.5 ? 14 : 12
-      }));
     }
 
     function renderGarden() {
       gCtx.clearRect(0, 0, width, height);
+      for (let el of activeElements) {
+        el.update();
+        el.draw(gCtx);
+      }
+      requestAnimationFrame(renderGarden);
+    }
+    renderGarden();
 
-      for (let i = activeFlowers.length - 1; i >= 0; i--) {
-        const flower = activeFlowers[i];
-        flower.update();
+    /* Secuencia interactiva de textos */
+    const sequence = [
+      { text: "Me hubiera encantado dártelas en persona y ponerlas en tus manos hoy mismo." },
+      { text: "Pero antes de dejar que termine el día sin darte unas flores amarillas, quise construirte estas." },
+      { text: "Tal vez sea de una forma distinta, pero con el mismo sentimiento para decirte:" },
+      { text: "<span class='inline-block text-yellow-300 font-extrabold text-3xl md:text-4xl tracking-wider glow-text handwriting transform scale-110'>TE AMO &lt;3</span>", triggerGarden: true },
+      { text: "te amo" },
+      { text: "te amo" },
+      { text: "te quiero" },
+      { text: "te quiero abrazar" },
+      { text: "quiero hacer locuras contigo.." },
+      { text: "NO lo olvides, y tampoco lo dudes.", isLast: true }
+    ];
+
+    let currentIndex = 0;
+    let isTransitioning = false;
+    const textTarget = document.getElementById('dynamic-text');
+    const hintTag = document.getElementById('hint-tag');
+
+    // Inicializar primer mensaje
+    textTarget.innerHTML = sequence[0].text;
+
+    let lastInteractionTime = 0;
+    function handleTap(e) {
+      const now = Date.now();
+      if (now - lastInteractionTime < 90) return;
+      lastInteractionTime = now;
+
+      let x = e.clientX;
+      let y = e.clientY;
+      if (e.touches && e.touches[0]) {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+      }
+      if (!x || !y) {
+        x = width / 2;
+        y = height / 2;
+      }
+
+      playSparkleSound();
+
+      // 35% de probabilidad de huella de michi, 65% de flor
+      if (Math.random() < 0.35) {
+        activeElements.push(new BloomingPaw(x, y, Math.random() * 0.35 + 0.75));
+      } else {
+        activeElements.push(new BloomingFlower(x, y, Math.random() * 0.35 + 0.65, { hasStem: false }));
+      }
+
+      // Si ya está en la última frase, solo siguen brotando flores y huellitas
+      if (currentIndex >= sequence.length - 1 || isTransitioning) return;
+
+      isTransitioning = true;
+      currentIndex++;
+
+      textTarget.classList.add('text-exit');
+
+      setTimeout(() => {
+        const item = sequence[currentIndex];
+        textTarget.innerHTML = item.text;
+
+        // Al llegar a TE AMO <3: estalla el jardín y caen pétalos
+        if (item.triggerGarden) {
+          petalsFalling = true;
+          bloomBottomGarden();
+        }
+
+        if (item.isLast) {
+          hintTag.style.transition = 'opacity 0.6s ease';
+          hintTag.style.opacity = '0';
+          setTimeout(() => hintTag.remove(), 600);
+        }
+
+        textTarget.classList.remove('text-exit');
+        textTarget.classList.add('text-enter');
+
+        setTimeout(() => {
+          textTarget.classList.remove('text-enter');
+          isTransitioning = false;
+        }, 50);
+
+      }, 450);
+    }
+
+    window.addEventListener('click', handleTap);
+    window.addEventListener('touchstart', handleTap, { passive: true });
+  </script>
+</body>
+</html>
